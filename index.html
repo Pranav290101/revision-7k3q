@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f3ebdd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1e1510" media="(prefers-color-scheme: dark)">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-title" content="Revision">
+<title>Revision Timer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3ebdd;--wine:#954535;--card:#fbf6ec;--ink:#2e2218;--mute:#7a6a58;--line:#e0d2bd;--acc:#b87820;--accfg:#fff8ea;--ok:#6b7a2e;
+--c0:#b87820;--c1:#b5502e;--c2:#6b7a2e;--c3:#7b3f00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1e1510;--wine:#e97451;--card:#2a1e16;--ink:#f0e4d0;--mute:#a8977f;--line:#43332a;--acc:#d89b35;--accfg:#1e1510;--ok:#a3ae5a;--c0:#d89b35;--c1:#d9774f;--c2:#a3ae5a;--c3:#c19a6b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1e1510;--wine:#e97451;--card:#2a1e16;--ink:#f0e4d0;--mute:#a8977f;--line:#43332a;--acc:#d89b35;--accfg:#1e1510;--ok:#a3ae5a;--c0:#d89b35;--c1:#d9774f;--c2:#a3ae5a;--c3:#c19a6b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);font:17px/1.4 "Lora",Georgia,serif;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text;font-size:16px}
+#pager{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#pager::-webkit-scrollbar{display:none}
+.pg{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior-y:contain;padding:16px 16px 28px}
+h1{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:28px;text-align:center;margin:4px 0 14px;letter-spacing:.2px}
+button{font-family:inherit}
+.time b,.big{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-variant-numeric:lining-nums tabular-nums}
+.chip,.btn,nav button,.lbl{font-family:"Playfair Display",Georgia,serif}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.lbl{font-size:14px;color:var(--mute);margin:0 0 8px;text-transform:uppercase;letter-spacing:.04em}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:12px;padding:13px 8px;font-size:16px;font-weight:700}
+.chip.on{border-color:var(--sc);background:color-mix(in srgb,var(--sc) 14%,transparent)}
+input[type=text],input[type=number],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;margin-top:10px}
+textarea{height:110px;font-size:12px}
+.ring{position:relative;width:264px;height:264px;margin:6px auto 12px}
+.ring svg{transform:rotate(-90deg)}
+.time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.time b{font-size:58px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:-1px}
+.time span{color:var(--mute);font-size:16px}
+.row{display:flex;gap:8px}
+.btn{flex:1;border:0;border-radius:12px;padding:14px;font-size:17px;font-weight:600;background:var(--line);color:var(--ink)}
+.btn.main{background:var(--acc);color:var(--accfg);flex:2}
+.btn.danger{background:transparent;color:var(--c1);border:1px solid var(--c1)}
+.dots{display:flex;justify-content:center;gap:6px;margin:4px 0 14px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.d{background:var(--acc)}
+.big{font-size:34px;font-weight:700}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar>div{height:100%;background:var(--ok);border-radius:6px;transition:width .3s}
+.sub{display:flex;justify-content:space-between;font-size:15px;margin-top:10px}
+.week{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:6px}
+.week div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:11px;color:var(--mute)}
+.week i{display:block;width:100%;background:var(--acc);border-radius:5px 5px 0 0;min-height:2px}
+.set{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.set input{width:90px;margin:0;text-align:center}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);max-width:480px;margin:0 auto}
+nav button{flex:1;height:64px;border:0;background:none;padding:0;font-size:16px;color:var(--mute);font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+nav button.on{color:var(--acc)}
+nav button span{display:block;font-size:24px;line-height:1.1}
+.bubble{position:absolute;left:0;top:0;width:33.3334%;height:64px;padding:7px 10px;z-index:2;will-change:transform;touch-action:none;cursor:grab}
+.bubble::before{content:"";display:block;width:100%;height:100%;border-radius:18px;background:linear-gradient(165deg,rgba(255,255,255,.2),rgba(255,255,255,.02) 55%,color-mix(in srgb,var(--acc) 14%,transparent));border:1px solid rgba(128,128,128,.32);box-shadow:inset 0 1.5px 2px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.07),0 5px 10px rgba(0,0,0,.16),0 1px 2px rgba(0,0,0,.12)}
+.bubble.drag{cursor:grabbing}
+.bubble.drag::before{transform:scale(1.06);box-shadow:inset 0 1.5px 2px rgba(255,255,255,.4),inset 0 -3px 5px rgba(0,0,0,.08),0 9px 16px rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.14)}
+.bubble::before{transition:transform .15s,box-shadow .15s}
+.hide{display:none}
+.recent{font-size:14px;color:var(--mute);margin:6px 0 0}
+</style>
+</head>
+<body>
+<main id="pager">
+<section class="pg" id="v-timer">
+<h1>📚 Revision Timer</h1>
+ <div class="card">
+  <p class="lbl">Subject</p>
+  <div class="chips" id="chips"></div>
+  <input type="text" id="topic" placeholder="Topic or reason (optional)" maxlength="60" autocomplete="off">
+ </div>
+ <div class="card">
+  <div class="ring">
+   <svg width="264" height="264" viewBox="0 0 240 240"><circle cx="120" cy="120" r="106" fill="none" stroke="var(--line)" stroke-width="16"/><circle id="arc" cx="120" cy="120" r="106" fill="none" stroke="var(--wine)" stroke-width="16" stroke-linecap="round" stroke-dasharray="666" stroke-dashoffset="0"/></svg>
+   <div class="time"><b id="clock">25:00</b><span id="mode">Focus</span></div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="row"><button class="btn" id="reset">Reset</button><button class="btn main" id="go">Start</button><button class="btn" id="skip">End</button></div>
+ </div>
+ <div class="card">
+  <p class="lbl">Today</p>
+  <div class="big" id="todayBig">0m</div>
+  <div class="bar"><div id="goalBar" style="width:0%"></div></div>
+  <div class="sub"><span id="goalTxt"></span><span id="goalPct"></span></div>
+ </div>
+</section>
+
+<section class="pg" id="v-stats"><h1>Stats</h1>
+ <div class="card"><p class="lbl">Today by subject</p><div id="bySub"></div></div>
+ <div class="card"><p class="lbl">Last 7 days</p><div class="week" id="week"></div><p class="recent" id="weekTot"></p></div>
+ <div class="card"><p class="lbl">Recent sessions</p><div id="recent"></div></div>
+</section>
+
+<section class="pg" id="v-set"><h1>Settings</h1>
+ <div class="card">
+  <p class="lbl">Timer (minutes)</p>
+  <div class="set"><span>Focus</span><input type="number" inputmode="numeric" id="s-focus" min="1" max="180"></div>
+  <div class="set"><span>Short break</span><input type="number" inputmode="numeric" id="s-short" min="1" max="60"></div>
+  <div class="set"><span>Long break</span><input type="number" inputmode="numeric" id="s-long" min="1" max="90"></div>
+  <div class="set"><span>Rounds before long break</span><input type="number" inputmode="numeric" id="s-rounds" min="2" max="10"></div>
+  <div class="set"><span>Daily goal</span><input type="number" inputmode="numeric" id="s-goal" min="10" max="900"></div>
+  <button class="btn main" id="save" style="width:100%">Save settings</button>
+ </div>
+ <div class="card">
+  <p class="lbl">Backup</p>
+  <p class="recent" style="margin-top:0">Your data is saved on this phone only. Copy the backup text and keep it somewhere safe, or paste it here to restore.</p>
+  <textarea id="bk" placeholder="Backup text appears here"></textarea>
+  <div class="row" style="margin-top:10px"><button class="btn" id="exp">Create backup</button><button class="btn" id="imp">Restore</button></div>
+  <p class="recent" id="bkMsg"></p>
+ </div>
+ <div class="card">
+  <p class="lbl">Reset</p>
+  <button class="btn danger" id="wipe" style="width:100%">Delete all my data</button>
+ </div>
+ <div class="card"><p class="lbl">Add to Home Screen</p><p class="recent" style="margin-top:0">In Safari tap the Share button, then “Add to Home Screen”. Keep the app open while the timer runs.</p></div>
+</section>
+
+</main>
+
+<nav>
+ <i class="bubble" id="bubble"></i>
+ <button data-v="timer" class="on">Timer</button>
+ <button data-v="stats">Stats</button>
+ <button data-v="set">Settings</button>
+</nav>
+
+<script>
+const SUBJ=["Physics","Computer Science","Maths","Further Maths"];
+const $=id=>document.getElementById(id);
+const KEY="revtimer.v1";
+const def={settings:{focus:25,short:5,long:15,rounds:4,goal:120},sessions:[],timer:{mode:"focus",running:false,endAt:0,left:1500,total:1500,round:1,subject:0,topic:""}};
+let D=JSON.parse(JSON.stringify(def));
+try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);D.settings=Object.assign(D.settings,p.settings||{});D.sessions=p.sessions||[];D.timer=Object.assign(D.timer,p.timer||{})}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+const T=D.timer,S=D.settings;
+const dkey=(d=new Date())=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const fmt=s=>{const m=Math.round(s/60);if(m<60)return m+"m";return Math.floor(m/60)+"h "+(m%60?String(m%60).padStart(2,"0")+"m":"")};
+const modeName={focus:"Focus",short:"Short break",long:"Long break"};
+const len=m=>S[m]*60;
+
+// subjects
+const chips=$("chips");
+SUBJ.forEach((n,i)=>{const b=document.createElement("button");b.className="chip";b.style.setProperty("--sc","var(--c"+i+")");b.textContent=n;b.onclick=()=>{T.subject=i;save();paint()};chips.appendChild(b)});
+$("topic").value=T.topic||"";
+$("topic").oninput=e=>{T.topic=e.target.value;save()};
+
+// audio + wake lock
+let ac,wl;
+function beep(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();[0,.25,.5].forEach(t=>{const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.value=880;g.gain.value=.25;o.start(ac.currentTime+t);o.stop(ac.currentTime+t+.15)});navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}
+async function lock(){try{if(navigator.wakeLock)wl=await navigator.wakeLock.request("screen")}catch(e){}}
+function unlock(){try{wl&&wl.release();wl=null}catch(e){}}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&T.running)lock()});
+
+function log(sec){if(sec<60)return;D.sessions.push({d:dkey(),s:T.subject,t:T.topic.trim(),sec:Math.round(sec)});if(D.sessions.length>3000)D.sessions.splice(0,500)}
+function next(){
+ if(T.mode==="focus"){T.mode=T.round>=S.rounds?"long":"short"}
+ else{T.round=T.mode==="long"?1:T.round+1;T.mode="focus"}
+ T.running=false;T.total=T.left=len(T.mode);unlock();
+}
+function done(){if(T.mode==="focus")log(T.total);beep();next();save();paint();renderStats()}
+function tick(){if(!T.running)return;T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0)done();else paintTime()}
+setInterval(tick,250);
+
+$("go").onclick=()=>{
+ if(T.running){T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));T.running=false;unlock()}
+ else{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}T.endAt=Date.now()+T.left*1000;T.running=true;lock()}
+ save();paint()};
+$("reset").onclick=()=>{T.running=false;T.left=T.total=len(T.mode);unlock();save();paint()};
+$("skip").onclick=()=>{
+ if(T.mode==="focus"){const el=T.running?T.total-Math.max(0,Math.ceil((T.endAt-Date.now())/1000)):T.total-T.left;log(el)}
+ next();save();paint();renderStats()};
+
+function paintTime(){
+ const m=Math.floor(T.left/60),s=T.left%60;$("clock").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+ $("arc").style.strokeDashoffset=666*(1-T.left/T.total);
+ document.title=T.running?$("clock").textContent+" · Revision":"Revision Timer"}
+function today(){const k=dkey();return D.sessions.filter(x=>x.d===k)}
+function paint(){
+ [...chips.children].forEach((c,i)=>c.classList.toggle("on",i===T.subject));
+ $("mode").textContent=modeName[T.mode]+(T.mode==="focus"?" · "+SUBJ[T.subject]:"");
+ $("go").textContent=T.running?"Pause":(T.left<T.total?"Resume":"Start");
+ $("arc").style.stroke=T.mode==="focus"?"var(--wine)":"var(--ok)";
+ $("dots").innerHTML=Array.from({length:S.rounds},(_,i)=>'<i class="'+(i<T.round-1||(i===T.round-1&&T.mode!=="focus")?"d":"")+'"></i>').join("");
+ paintTime();
+ const tot=today().reduce((a,x)=>a+x.sec,0),goal=S.goal*60;
+ $("todayBig").textContent=tot?fmt(tot):"0m";
+ $("goalBar").style.width=Math.min(100,tot/goal*100)+"%";
+ $("goalTxt").textContent="Goal: "+fmt(goal);$("goalPct").textContent=Math.round(tot/goal*100)+"%"}
+
+function renderStats(){
+ const td=today(),tot=td.reduce((a,x)=>a+x.sec,0);
+ $("bySub").innerHTML=td.length?SUBJ.map((n,i)=>{const s=td.filter(x=>x.s===i).reduce((a,x)=>a+x.sec,0);if(!s)return"";return'<div class="sub" style="margin-top:0;margin-bottom:6px"><span>'+n+'</span><b>'+fmt(s)+'</b></div><div class="bar" style="margin:0 0 10px"><div style="width:'+(s/tot*100)+'%;background:var(--c'+i+')"></div></div>'}).join(""):'<p class="recent">Nothing logged yet today.</p>';
+ const days=[],now=new Date();let wt=0,mx=1;
+ for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const k=dkey(d);const s=D.sessions.filter(x=>x.d===k).reduce((a,x)=>a+x.sec,0);days.push({l:d.toLocaleDateString(undefined,{weekday:"narrow"}),s});wt+=s;mx=Math.max(mx,s)}
+ $("week").innerHTML=days.map(x=>'<div><i style="height:'+Math.max(2,x.s/mx*88)+'px"></i>'+(x.s?fmt(x.s):"")+'<br>'+x.l+'</div>').join("");
+ $("weekTot").textContent="7-day total: "+fmt(wt);
+ const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+ $("recent").innerHTML=D.sessions.slice(-8).reverse().map(x=>'<p class="recent" style="margin:0 0 6px"><b style="color:var(--c'+x.s+')">'+SUBJ[x.s]+'</b> · '+fmt(x.sec)+(x.t?' · '+esc(x.t):'')+' <span style="float:right">'+x.d.slice(5)+'</span></p>').join("")||'<p class="recent">No sessions yet.</p>'}
+
+// settings
+function loadSet(){["focus","short","long","rounds","goal"].forEach(k=>$("s-"+k).value=S[k])}
+$("save").onclick=()=>{
+ const c=(k,a,b)=>Math.min(b,Math.max(a,parseInt($("s-"+k).value)||S[k]));
+ S.focus=c("focus",1,180);S.short=c("short",1,60);S.long=c("long",1,90);S.rounds=c("rounds",2,10);S.goal=c("goal",10,900);
+ if(!T.running){T.left=T.total=len(T.mode);}
+ if(T.round>S.rounds)T.round=1;
+ save();loadSet();paint();$("bkMsg").textContent="Settings saved ✓"};
+$("exp").onclick=async()=>{const t=JSON.stringify({settings:S,sessions:D.sessions});$("bk").value=t;try{await navigator.clipboard.writeText(t);$("bkMsg").textContent="Copied to clipboard ✓"}catch(e){$("bk").select();$("bkMsg").textContent="Select all and copy the text."}};
+$("imp").onclick=()=>{try{const p=JSON.parse($("bk").value);if(!Array.isArray(p.sessions))throw 0;D.sessions=p.sessions;Object.assign(S,p.settings||{});save();loadSet();paint();renderStats();$("bkMsg").textContent="Restored ✓"}catch(e){$("bkMsg").textContent="That backup text isn’t valid."}};
+$("wipe").onclick=()=>{if(confirm("Delete all sessions and settings? This can’t be undone.")){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
+
+// swipe pages + tabs
+const pager=$("pager"),tabs=[...document.querySelectorAll("nav button")],bub=$("bubble");let cur=0;
+function sync(){const w=pager.clientWidth||1,p=pager.scrollLeft/w;bub.style.transform="translateX("+p*100+"%)";const i=Math.round(p);if(i!==cur){cur=i;tabs.forEach((x,j)=>x.classList.toggle("on",j===i));if(i===1)renderStats()}}
+pager.addEventListener("scroll",sync,{passive:true});
+tabs.forEach((b,i)=>b.onclick=()=>pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"}));
+window.addEventListener("resize",()=>{pager.scrollTo({left:cur*pager.clientWidth});sync()});
+document.addEventListener("gesturestart",e=>e.preventDefault());
+// drag the glass pill to change page
+(()=>{let sx=0,s0=0,on=false;const nav=document.querySelector("nav");
+ bub.addEventListener("pointerdown",e=>{on=true;sx=e.clientX;s0=pager.scrollLeft;pager.style.scrollSnapType="none";bub.classList.add("drag");try{bub.setPointerCapture(e.pointerId)}catch(_){}});
+ bub.addEventListener("pointermove",e=>{if(!on)return;const max=pager.scrollWidth-pager.clientWidth;pager.scrollLeft=Math.min(max,Math.max(0,s0+(e.clientX-sx)*3/nav.clientWidth*pager.clientWidth))});
+ const end=()=>{if(!on)return;on=false;bub.classList.remove("drag");const i=Math.max(0,Math.min(2,Math.round(pager.scrollLeft/pager.clientWidth)));pager.style.scrollSnapType="";pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"})};
+ bub.addEventListener("pointerup",end);bub.addEventListener("pointercancel",end)})();
+// home screen icon
+try{const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");const g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,"#d89b35");g.addColorStop(1,"#6b3f1d");x.fillStyle=g;x.fillRect(0,0,180,180);x.font="100px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("📚",90,98);const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}catch(e){}
+
+// resume if app was closed mid-timer
+if(T.running){T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0){T.left=0;done()}else lock()}
+loadSet();paint();renderStats();
+</script>
+</body>
+</html>
