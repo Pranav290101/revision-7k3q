@@ -26,7 +26,7 @@ html,body{margin:0}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{background:var(--bg);color:var(--ink);font:17px/1.4 "Lora",Georgia,serif;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text;font-size:16px}
-#pager{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#pager{position:fixed;top:calc(env(safe-area-inset-top,0px) + 42px);left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #pager::-webkit-scrollbar{display:none}
 .pg{flex:0 0 100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;overflow-y:auto;overscroll-behavior-y:contain;padding:16px 16px 28px}
 h1{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:28px;text-align:center;margin:4px 0 14px;letter-spacing:.2px}
@@ -65,16 +65,45 @@ nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);b
 nav button{flex:1;height:64px;border:0;background:none;padding:0;font-size:16px;color:var(--mute);font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 nav button.on{color:var(--acc)}
 nav button span{display:block;font-size:24px;line-height:1.1}
-.bubble{position:absolute;left:0;top:0;width:33.3334%;height:64px;padding:7px 10px;z-index:2;will-change:transform;touch-action:none;cursor:grab}
+.bubble{position:absolute;left:0;top:0;width:25%;height:64px;padding:7px 10px;z-index:2;will-change:transform;touch-action:none;cursor:grab}
 .bubble::before{content:"";display:block;width:100%;height:100%;border-radius:18px;background:linear-gradient(165deg,rgba(255,255,255,.2),rgba(255,255,255,.02) 55%,color-mix(in srgb,var(--acc) 14%,transparent));border:1px solid rgba(128,128,128,.32);box-shadow:inset 0 1.5px 2px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.07),0 5px 10px rgba(0,0,0,.16),0 1px 2px rgba(0,0,0,.12)}
 .bubble.drag{cursor:grabbing}
 .bubble.drag::before{transform:scale(1.06);box-shadow:inset 0 1.5px 2px rgba(255,255,255,.4),inset 0 -3px 5px rgba(0,0,0,.08),0 9px 16px rgba(0,0,0,.2),0 2px 4px rgba(0,0,0,.14)}
 .bubble::before{transition:transform .15s,box-shadow .15s}
 .hide{display:none}
 .recent{font-size:14px;color:var(--mute);margin:6px 0 0}
+#top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;max-width:480px;margin:0 auto;height:42px;display:flex;justify-content:flex-end;align-items:center;padding:0 14px;z-index:5}
+#streak{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:6px 12px;font-size:14px}
+select,input[type=date]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px;margin-top:10px;-webkit-appearance:none;appearance:none;min-height:46px}
+.task{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.task.dn .tx>div:first-child{text-decoration:line-through;opacity:.6}
+.tx{flex:1;min-width:0;word-break:break-word}
+.chk{width:28px;height:28px;flex:none;border-radius:50%;border:2px solid var(--acc);background:transparent;color:var(--accfg);font-size:16px;padding:0;line-height:1}
+.dn .chk{background:var(--acc)}
+.mini{border:0;background:var(--line);color:var(--ink);border-radius:8px;padding:7px 9px;font-size:13px}
+.tag{font-size:12px;font-weight:700;margin-right:8px;color:var(--mute)}
+.tag.late{color:var(--c1)}
+.pk{border:2px solid var(--line);background:transparent;color:var(--ink);border-radius:20px;padding:8px 12px;margin:0 6px 6px 0;font-size:14px;text-align:left}
+.pk.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 18%,transparent)}
+.cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.nb{border:0;background:var(--line);color:var(--ink);border-radius:10px;width:42px;height:36px;font-size:20px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.wd{font-style:normal;font-size:12px;color:var(--mute)}
+.cd{aspect-ratio:1;border:2px solid transparent;border-radius:50%;background:transparent;color:var(--ink);font-size:15px;font-weight:600;padding:0}
+.cd.some{border-color:var(--acc)}
+.cd.hit{background:var(--acc);color:var(--accfg)}
+.cd.td{text-decoration:underline}
+.cd.sel{box-shadow:0 0 0 2px var(--wine)}
+#mk{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;display:flex;align-items:center;justify-content:center;padding:20px}
+#mk.hide{display:none}
+.mc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;width:100%;max-width:400px}
+.mc h2{margin:0 0 6px;font-family:'Playfair Display',Georgia,serif}
+.ml{display:flex;gap:10px;align-items:center;padding:8px 0}
+.ml input{width:22px;height:22px;margin:0}
 </style>
 </head>
 <body>
+<div id="top"><button id="streak"></button></div>
 <main id="pager">
 <section class="pg" id="v-timer">
 <h1>📚 Revision Timer</h1>
@@ -82,6 +111,7 @@ nav button span{display:block;font-size:24px;line-height:1.1}
   <p class="lbl">Subject</p>
   <div class="chips" id="chips"></div>
   <input type="text" id="topic" placeholder="Topic or reason (optional)" maxlength="60" autocomplete="off">
+  <p class="lbl" style="margin:14px 0 6px">Tasks I’m working on</p><div id="pick"></div>
  </div>
  <div class="card">
   <div class="ring">
@@ -100,9 +130,21 @@ nav button span{display:block;font-size:24px;line-height:1.1}
 </section>
 
 <section class="pg" id="v-stats"><h1>Stats</h1>
- <div class="card"><p class="lbl">Today by subject</p><div id="bySub"></div></div>
+ <div class="card"><div class="cal-h"><button class="nb" id="pm">‹</button><b id="cm"></b><button class="nb" id="nm">›</button></div><div class="cal" id="cal"></div></div>
+ <div class="card"><p class="lbl" id="dl"></p><div id="dd"></div></div>
  <div class="card"><p class="lbl">Last 7 days</p><div class="week" id="week"></div><p class="recent" id="weekTot"></p></div>
- <div class="card"><p class="lbl">Recent sessions</p><div id="recent"></div></div>
+ 
+</section>
+
+<section class="pg" id="v-todo"><h1>To-do</h1>
+ <div class="card">
+  <p class="lbl">New task</p>
+  <input type="text" id="t-text" placeholder="Describe the task" maxlength="120" autocomplete="off">
+  <select id="t-sub"><option value="-1">No subject</option></select>
+  <input type="date" id="t-due">
+  <div class="row" style="margin-top:12px"><button class="btn hide" id="t-cancel">Cancel</button><button class="btn main" id="t-add">Add task</button></div>
+ </div>
+ <div class="card"><div id="tl"></div><div id="tdone"></div></div>
 </section>
 
 <section class="pg" id="v-set"><h1>Settings</h1>
@@ -135,8 +177,10 @@ nav button span{display:block;font-size:24px;line-height:1.1}
  <i class="bubble" id="bubble"></i>
  <button data-v="timer" class="on">Timer</button>
  <button data-v="stats">Stats</button>
+ <button data-v="todo">To-do</button>
  <button data-v="set">Settings</button>
 </nav>
+<div id="mk" class="hide"></div>
 
 <script>
 const SUBJ=["Physics","Computer Science","Maths","Further Maths"];
@@ -144,7 +188,7 @@ const $=id=>document.getElementById(id);
 const KEY="revtimer.v1";
 const def={settings:{focus:25,short:5,long:15,rounds:4,goal:120},sessions:[],timer:{mode:"focus",running:false,endAt:0,left:1500,total:1500,round:1,subject:0,topic:""}};
 let D=JSON.parse(JSON.stringify(def));
-try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);D.settings=Object.assign(D.settings,p.settings||{});D.sessions=p.sessions||[];D.timer=Object.assign(D.timer,p.timer||{})}}catch(e){}
+try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);D.settings=Object.assign(D.settings,p.settings||{});D.sessions=p.sessions||[];D.tasks=p.tasks||[];D.timer=Object.assign(D.timer,p.timer||{})}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
 const T=D.timer,S=D.settings;
 const dkey=(d=new Date())=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
@@ -165,13 +209,13 @@ async function lock(){try{if(navigator.wakeLock)wl=await navigator.wakeLock.requ
 function unlock(){try{wl&&wl.release();wl=null}catch(e){}}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden&&T.running)lock()});
 
-function log(sec){if(sec<60)return;D.sessions.push({d:dkey(),s:T.subject,t:T.topic.trim(),sec:Math.round(sec)});if(D.sessions.length>3000)D.sessions.splice(0,500)}
+function log(sec){if(sec<60)return;D.sessions.push({d:dkey(),s:T.subject,t:T.topic.trim(),k:selTasks(),sec:Math.round(sec)});if(D.sessions.length>3000)D.sessions.splice(0,500)}
 function next(){
  if(T.mode==="focus"){T.mode=T.round>=S.rounds?"long":"short"}
  else{T.round=T.mode==="long"?1:T.round+1;T.mode="focus"}
  T.running=false;T.total=T.left=len(T.mode);unlock();
 }
-function done(){if(T.mode==="focus")log(T.total);beep();next();save();paint();renderStats()}
+function done(){const f=T.mode==="focus";if(f)log(T.total);beep();next();save();paint();renderStats();if(f)askDone()}
 function tick(){if(!T.running)return;T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0)done();else paintTime()}
 setInterval(tick,250);
 
@@ -181,8 +225,8 @@ $("go").onclick=()=>{
  save();paint()};
 $("reset").onclick=()=>{T.running=false;T.left=T.total=len(T.mode);unlock();save();paint()};
 $("skip").onclick=()=>{
- if(T.mode==="focus"){const el=T.running?T.total-Math.max(0,Math.ceil((T.endAt-Date.now())/1000)):T.total-T.left;log(el)}
- next();save();paint();renderStats()};
+ if(T.mode==="focus"){const el=T.running?T.total-Math.max(0,Math.ceil((T.endAt-Date.now())/1000)):T.total-T.left;log(el);var f=1}
+ next();save();paint();renderStats();if(f)askDone()};
 
 function paintTime(){
  const m=Math.floor(T.left/60),s=T.left%60;$("clock").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
@@ -199,17 +243,17 @@ function paint(){
  const tot=today().reduce((a,x)=>a+x.sec,0),goal=S.goal*60;
  $("todayBig").textContent=tot?fmt(tot):"0m";
  $("goalBar").style.width=Math.min(100,tot/goal*100)+"%";
- $("goalTxt").textContent="Goal: "+fmt(goal);$("goalPct").textContent=Math.round(tot/goal*100)+"%"}
+ $("goalTxt").textContent="Goal: "+fmt(goal);$("goalPct").textContent=Math.round(tot/goal*100)+"%";paintStreak();paintPick()}
 
 function renderStats(){
  const td=today(),tot=td.reduce((a,x)=>a+x.sec,0);
- $("bySub").innerHTML=td.length?SUBJ.map((n,i)=>{const s=td.filter(x=>x.s===i).reduce((a,x)=>a+x.sec,0);if(!s)return"";return'<div class="sub" style="margin-top:0;margin-bottom:6px"><span>'+n+'</span><b>'+fmt(s)+'</b></div><div class="bar" style="margin:0 0 10px"><div style="width:'+(s/tot*100)+'%;background:var(--c'+i+')"></div></div>'}).join(""):'<p class="recent">Nothing logged yet today.</p>';
+ 
  const days=[],now=new Date();let wt=0,mx=1;
  for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(now.getDate()-i);const k=dkey(d);const s=D.sessions.filter(x=>x.d===k).reduce((a,x)=>a+x.sec,0);days.push({l:d.toLocaleDateString(undefined,{weekday:"narrow"}),s});wt+=s;mx=Math.max(mx,s)}
  $("week").innerHTML=days.map(x=>'<div><i style="height:'+Math.max(2,x.s/mx*88)+'px"></i>'+(x.s?fmt(x.s):"")+'<br>'+x.l+'</div>').join("");
  $("weekTot").textContent="7-day total: "+fmt(wt);
  const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
- $("recent").innerHTML=D.sessions.slice(-8).reverse().map(x=>'<p class="recent" style="margin:0 0 6px"><b style="color:var(--c'+x.s+')">'+SUBJ[x.s]+'</b> · '+fmt(x.sec)+(x.t?' · '+esc(x.t):'')+' <span style="float:right">'+x.d.slice(5)+'</span></p>').join("")||'<p class="recent">No sessions yet.</p>'}
+ renderCal()}
 
 // settings
 function loadSet(){["focus","short","long","rounds","goal"].forEach(k=>$("s-"+k).value=S[k])}
@@ -219,10 +263,81 @@ $("save").onclick=()=>{
  if(!T.running){T.left=T.total=len(T.mode);}
  if(T.round>S.rounds)T.round=1;
  save();loadSet();paint();$("bkMsg").textContent="Settings saved ✓"};
-$("exp").onclick=async()=>{const t=JSON.stringify({settings:S,sessions:D.sessions});$("bk").value=t;try{await navigator.clipboard.writeText(t);$("bkMsg").textContent="Copied to clipboard ✓"}catch(e){$("bk").select();$("bkMsg").textContent="Select all and copy the text."}};
-$("imp").onclick=()=>{try{const p=JSON.parse($("bk").value);if(!Array.isArray(p.sessions))throw 0;D.sessions=p.sessions;Object.assign(S,p.settings||{});save();loadSet();paint();renderStats();$("bkMsg").textContent="Restored ✓"}catch(e){$("bkMsg").textContent="That backup text isn’t valid."}};
+$("exp").onclick=async()=>{const t=JSON.stringify({settings:S,sessions:D.sessions,tasks:D.tasks});$("bk").value=t;try{await navigator.clipboard.writeText(t);$("bkMsg").textContent="Copied to clipboard ✓"}catch(e){$("bk").select();$("bkMsg").textContent="Select all and copy the text."}};
+$("imp").onclick=()=>{try{const p=JSON.parse($("bk").value);if(!Array.isArray(p.sessions))throw 0;D.sessions=p.sessions;D.tasks=p.tasks||[];Object.assign(S,p.settings||{});save();loadSet();paint();renderStats();renderTodo();$("bkMsg").textContent="Restored ✓"}catch(e){$("bkMsg").textContent="That backup text isn’t valid."}};
 $("wipe").onclick=()=>{if(confirm("Delete all sessions and settings? This can’t be undone.")){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}};
 
+// tasks, streak, calendar
+D.tasks=D.tasks||[];T.sel=T.sel||[];
+const E=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const dstr=k=>{const a=k.split('-');return new Date(+a[0],a[1]-1,+a[2])};
+const nice=k=>dstr(k).toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+const mon=k=>{const d=dstr(k);d.setDate(d.getDate()-(d.getDay()+6)%7);return dkey(d)};
+const dayTot=()=>{const m={};D.sessions.forEach(x=>m[x.d]=(m[x.d]||0)+x.sec);return m};
+function streak(){
+ const m=dayTot(),g=S.goal*60,ks=Object.keys(m).filter(k=>m[k]>=g).sort(),td=dkey(),u={};
+ if(!ks.length)return{cur:0,best:0,left:2};
+ let s=0,b=0;const d=dstr(ks[0]);
+ while(dkey(d)<=td){const k=dkey(d);
+  if(m[k]>=g){s++;b=Math.max(b,s)}
+  else if(k<td){const w=mon(k);if(s>0&&(u[w]||0)<2)u[w]=(u[w]||0)+1;else s=0}
+  d.setDate(d.getDate()+1)}
+ return{cur:s,best:b,left:2-(u[mon(td)]||0)}}
+function paintStreak(){const r=streak();$('streak').innerHTML=`🔥 <b>${r.cur}</b> · Best <b>${r.best}</b> · ❄ ${r.left}`}
+$('streak').onclick=()=>{const r=streak();alert(`Current streak: ${r.cur} day(s)
+Longest streak: ${r.best} day(s)
+Freezes left this week: ${r.left} of 2
+
+Hit your daily goal to add a day. A missed day uses a freeze automatically. With none left, the streak resets.`)};
+SUBJ.forEach((n,i)=>$('t-sub').add(new Option(n,i)));
+let edit=null;
+const tag=t=>{const k=dkey(),s=t.subj>=0?`<span class='tag' style='color:var(--c${t.subj})'>${SUBJ[t.subj]}</span>`:'';let d='';if(t.due)d=`<span class='tag${!t.done&&t.due<k?' late':''}'>${t.due===k?'Due today':(!t.done&&t.due<k?'Overdue · ':'Due ')+nice(t.due)}</span>`;return s+d};
+const row=t=>`<div class='task${t.done?' dn':''}'><button class='chk' data-a='tg' data-i='${t.id}'>${t.done?'✓':''}</button><div class='tx'><div>${E(t.text)}</div><div>${tag(t)}</div></div><button class='mini' data-a='ed' data-i='${t.id}'>Edit</button><button class='mini' data-a='dl' data-i='${t.id}'>Delete</button></div>`;
+function renderTodo(){
+ const op=D.tasks.filter(t=>!t.done).sort((a,b)=>(a.due||'9')>(b.due||'9')?1:-1),dn=D.tasks.filter(t=>t.done&&!t.hid);
+ $('tl').innerHTML=op.map(row).join('')||`<p class='recent'>No open tasks. Add one above.</p>`;
+ $('tdone').innerHTML=dn.length?`<p class='lbl' style='margin-top:14px'>Completed (${dn.length})</p>`+dn.map(row).join('')+`<button class='btn' data-a='cc' style='width:100%;margin-top:10px'>Clear completed</button>`:''}
+function resetForm(){edit=null;$('t-text').value='';$('t-sub').value='-1';$('t-due').value='';$('t-add').textContent='Add task';$('t-cancel').classList.add('hide')}
+$('t-cancel').onclick=resetForm;
+$('t-add').onclick=()=>{const tx=$('t-text').value.trim();if(!tx){$('t-text').focus();return}
+ const v={text:tx,subj:+$('t-sub').value,due:$('t-due').value};
+ if(edit)Object.assign(D.tasks.find(x=>x.id===edit),v);else D.tasks.push(Object.assign({id:Date.now()+''+Math.floor(Math.random()*999),done:false,doneOn:''},v));
+ resetForm();save();renderTodo();paintPick();renderStats()};
+$('v-todo').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,t=D.tasks.find(x=>x.id===b.dataset.i);
+ if(a==='tg'){t.done=!t.done;t.doneOn=t.done?dkey():'';t.hid=false}
+ else if(a==='dl'){if(!confirm('Delete this task?'))return;D.tasks=D.tasks.filter(x=>x!==t)}
+ else if(a==='ed'){edit=t.id;$('t-text').value=t.text;$('t-sub').value=t.subj;$('t-due').value=t.due;$('t-add').textContent='Save changes';$('t-cancel').classList.remove('hide');$('t-text').focus();return}
+ else if(a==='cc'){D.tasks.forEach(x=>{if(x.done)x.hid=true})}
+ save();renderTodo();paintPick();renderStats()});
+function paintPick(){const op=D.tasks.filter(t=>!t.done);T.sel=T.sel.filter(i=>op.some(t=>t.id===i));
+ $('pick').innerHTML=op.length?op.map(t=>`<button class='pk${T.sel.includes(t.id)?' on':''}' data-i='${t.id}'>${E(t.text)}</button>`).join(''):`<p class='recent' style='margin:0'>No tasks yet. Add some in the To-do tab.</p>`}
+$('pick').onclick=e=>{const b=e.target.closest('.pk');if(!b)return;const i=b.dataset.i;T.sel=T.sel.includes(i)?T.sel.filter(x=>x!==i):T.sel.concat(i);save();paintPick()};
+const selTasks=()=>T.sel.map(i=>D.tasks.find(t=>t.id===i)).filter(Boolean).map(t=>({id:t.id,t:t.text}));
+function askDone(){const ks=selTasks();if(!ks.length)return;
+ $('mk').innerHTML=`<div class='mc'><h2>Session saved</h2><p class='recent' style='margin-top:0'>Did you finish any of these tasks?</p>${ks.map(k=>`<label class='ml'><input type='checkbox' value='${k.id}'> ${E(k.t)}</label>`).join('')}<div class='row' style='margin-top:12px'><button class='btn' id='m-no'>Not yet</button><button class='btn main' id='m-ok'>Mark done</button></div></div>`;
+ $('mk').classList.remove('hide');const close=()=>$('mk').classList.add('hide');
+ $('m-no').onclick=close;
+ $('m-ok').onclick=()=>{$('mk').querySelectorAll('input:checked').forEach(c=>{const t=D.tasks.find(x=>x.id===c.value);if(t){t.done=true;t.doneOn=dkey();t.hid=false}});save();close();renderTodo();paintPick();renderStats()}}
+let cy=new Date().getFullYear(),cmo=new Date().getMonth(),sel=dkey();
+function renderCal(){
+ const m=dayTot(),g=S.goal*60,first=new Date(cy,cmo,1),off=(first.getDay()+6)%7,n=new Date(cy,cmo+1,0).getDate(),td=dkey();
+ $('cm').textContent=first.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+ let h='MTWTFSS'.split('').map(c=>`<i class='wd'>${c}</i>`).join('')+'<i></i>'.repeat(off);
+ for(let d=1;d<=n;d++){const k=cy+'-'+String(cmo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),s=m[k]||0;
+  h+=`<button class='cd${s>=g?' hit':s?' some':''}${k===td?' td':''}${k===sel?' sel':''}' data-k='${k}'>${d}</button>`}
+ $('cal').innerHTML=h;
+ const ss=D.sessions.filter(x=>x.d===sel),dn=D.tasks.filter(t=>t.doneOn===sel),du=D.tasks.filter(t=>!t.done&&t.due===sel),tot=ss.reduce((a,x)=>a+x.sec,0);
+ $('dl').textContent=(sel===td?'Today · ':'')+nice(sel);
+ let o=`<div class='big'>${fmt(tot)}</div><div class='bar'><div style='width:${Math.min(100,tot/g*100)}%'></div></div><div class='sub'><span>Goal ${fmt(g)}</span><span>${tot>=g?'Goal met ✓':Math.round(tot/g*100)+'%'}</span></div>`;
+ o+=SUBJ.map((n,i)=>{const s=ss.filter(x=>x.s===i).reduce((a,x)=>a+x.sec,0);return s?`<div class='sub'><span style='color:var(--c${i})'>${n}</span><b>${fmt(s)}</b></div>`:''}).join('');
+ if(ss.length)o+=`<p class='lbl' style='margin-top:14px'>Sessions</p>`+ss.map(x=>`<p class='recent' style='margin:0 0 6px'><b style='color:var(--c${x.s})'>${SUBJ[x.s]}</b> · ${fmt(x.sec)}${x.t?' · '+E(x.t):''}${(x.k||[]).length?'<br>Worked on: '+x.k.map(k=>E(k.t)).join(', '):''}</p>`).join('');
+ if(dn.length)o+=`<p class='lbl' style='margin-top:14px'>Tasks completed</p>`+dn.map(t=>`<p class='recent' style='margin:0 0 4px'>✓ ${E(t.text)}</p>`).join('');
+ if(du.length)o+=`<p class='lbl' style='margin-top:14px'>Due this day</p>`+du.map(t=>`<p class='recent' style='margin:0 0 4px'>○ ${E(t.text)}</p>`).join('');
+ if(!ss.length&&!dn.length&&!du.length)o+=`<p class='recent'>Nothing logged this day.</p>`;
+ $('dd').innerHTML=o}
+$('cal').onclick=e=>{const b=e.target.closest('.cd');if(b){sel=b.dataset.k;renderCal()}};
+$('pm').onclick=()=>{cmo--;if(cmo<0){cmo=11;cy--}renderCal()};
+$('nm').onclick=()=>{cmo++;if(cmo>11){cmo=0;cy++}renderCal()};
 // swipe pages + tabs
 const pager=$("pager"),tabs=[...document.querySelectorAll("nav button")],bub=$("bubble");let cur=0;
 function sync(){const w=pager.clientWidth||1,p=pager.scrollLeft/w;bub.style.transform="translateX("+p*100+"%)";const i=Math.round(p);if(i!==cur){cur=i;tabs.forEach((x,j)=>x.classList.toggle("on",j===i));if(i===1)renderStats()}}
@@ -233,15 +348,15 @@ document.addEventListener("gesturestart",e=>e.preventDefault());
 // drag the glass pill to change page
 (()=>{let sx=0,s0=0,on=false;const nav=document.querySelector("nav");
  bub.addEventListener("pointerdown",e=>{on=true;sx=e.clientX;s0=pager.scrollLeft;pager.style.scrollSnapType="none";bub.classList.add("drag");try{bub.setPointerCapture(e.pointerId)}catch(_){}});
- bub.addEventListener("pointermove",e=>{if(!on)return;const max=pager.scrollWidth-pager.clientWidth;pager.scrollLeft=Math.min(max,Math.max(0,s0+(e.clientX-sx)*3/nav.clientWidth*pager.clientWidth))});
- const end=()=>{if(!on)return;on=false;bub.classList.remove("drag");const i=Math.max(0,Math.min(2,Math.round(pager.scrollLeft/pager.clientWidth)));pager.style.scrollSnapType="";pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"})};
+ bub.addEventListener("pointermove",e=>{if(!on)return;const max=pager.scrollWidth-pager.clientWidth;pager.scrollLeft=Math.min(max,Math.max(0,s0+(e.clientX-sx)*4/nav.clientWidth*pager.clientWidth))});
+ const end=()=>{if(!on)return;on=false;bub.classList.remove("drag");const i=Math.max(0,Math.min(3,Math.round(pager.scrollLeft/pager.clientWidth)));pager.style.scrollSnapType="";pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"})};
  bub.addEventListener("pointerup",end);bub.addEventListener("pointercancel",end)})();
 // home screen icon
 try{const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");const g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,"#d89b35");g.addColorStop(1,"#6b3f1d");x.fillStyle=g;x.fillRect(0,0,180,180);x.font="100px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("📚",90,98);const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}catch(e){}
 
 // resume if app was closed mid-timer
 if(T.running){T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0){T.left=0;done()}else lock()}
-loadSet();paint();renderStats();
+loadSet();renderTodo();paint();renderStats();
 </script>
 </body>
 </html>
