@@ -225,7 +225,7 @@ $("go").onclick=()=>{
  save();paint()};
 $("reset").onclick=()=>{T.running=false;T.left=T.total=len(T.mode);unlock();save();paint()};
 $("skip").onclick=()=>{
- if(T.mode==="focus"){const el=T.running?T.total-Math.max(0,Math.ceil((T.endAt-Date.now())/1000)):T.total-T.left;log(el);var f=1}
+ if(T.mode==="focus"){const el=T.running?T.total-Math.max(0,Math.ceil((T.endAt-Date.now())/1000)):T.total-T.left;if(!confirm(el>=60?"End now and save "+Math.round(el/60)+" min of study?":"End this session? Under 1 minute won’t be saved."))return;log(el);var f=1}
  next();save();paint();renderStats();if(f)askDone()};
 
 function paintTime(){
@@ -236,7 +236,7 @@ function today(){const k=dkey();return D.sessions.filter(x=>x.d===k)}
 function paint(){
  [...chips.children].forEach((c,i)=>c.classList.toggle("on",i===T.subject));
  $("mode").textContent=modeName[T.mode]+(T.mode==="focus"?" · "+SUBJ[T.subject]:"");
- $("go").textContent=T.running?"Pause":(T.left<T.total?"Resume":"Start");
+ $("go").textContent=T.running?"Pause":(T.left<T.total?"Resume":"Start");$("skip").textContent=T.mode==="focus"?"End":"Skip";
  $("arc").style.stroke=T.mode==="focus"?"var(--wine)":"var(--ok)";
  $("dots").innerHTML=Array.from({length:S.rounds},(_,i)=>'<i class="'+(i<T.round-1||(i===T.round-1&&T.mode!=="focus")?"d":"")+'"></i>').join("");
  paintTime();
