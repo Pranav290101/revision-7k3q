@@ -401,16 +401,13 @@ function remind(m,long){const w='💧 Drink some water',st='🧘 '+pickOne(['Rol
  const r=m<20?pickOne([w,st]):m<40?w+'<br>'+st:w+'<br>'+st+'<br>💪 Do 20 push-ups';
  return r+(long?'<br>🚶 Take a short walk':'')}
 function paintRem(){const r=$('rem'),s=T.mode!=='focus'&&T.rem;r.classList.toggle('hide',!s);if(s)r.innerHTML=T.rem}
-const SN=[['none','Off'],['rain','Rain'],['pen','Pen on paper'],['brown','Brown noise'],['fire','Fireplace'],['wind','Soft wind']];
-const bufs={},FL={rain:[['highpass',500],['lowpass',9000]],pen:[['bandpass',4800,.8]],wind:[['lowpass',1100]]},GN={rain:.9,pen:1.1,brown:.9,fire:.9,wind:1.1};
+const SN=[['none','Off'],['rain','Rain'],['cabin','Cosy cabin']];
+const bufs={},FL={rain:[['highpass',500],['lowpass',9000]]},GN={rain:.9,cabin:.95};
 let sn=null;
 const vg=()=>Math.pow(D.snd.vol/100,2)*GN[D.snd.id];
 function mkBuf(id){if(bufs[id])return bufs[id];const sr=ac.sampleRate,n=sr*10,b=ac.createBuffer(1,n,sr),d=b.getChannelData(0),R=Math.random;let l=0;
- if(id==='brown'){for(let i=0;i<n;i++){l=(l+.02*(R()*2-1))/1.02;d[i]=l*3.4}}
- else if(id==='wind'){for(let i=0;i<n;i++){l=(l+.05*(R()*2-1))/1.05;const t=i/sr;d[i]=l*2.6*(.55+.27*Math.sin(6.2832*.1*t)+.18*Math.sin(6.2832*.3*t+1))}}
- else if(id==='rain'){for(let i=0;i<n;i++)d[i]=(R()*2-1)*.3;for(let k=0;k<500;k++){const p=Math.floor(R()*(n-900)),a=.25+R()*.5,len=Math.floor(sr*.014);for(let j=0;j<len;j++)d[p+j]+=(R()*2-1)*a*Math.exp(-j/(sr*.003))}}
- else if(id==='pen'){let p=Math.floor(sr*.2);while(p<n-sr){const len=Math.floor(sr*(.08+R()*.3)),f=14+R()*20;for(let j=0;j<len&&p+j<n;j++){d[p+j]=(R()*2-1)*Math.pow(Math.sin(Math.PI*j/len),.7)*(.5+.5*Math.sin(6.2832*f*j/sr))*.7}p+=len+Math.floor(sr*(R()<.15?.9+R()*.6:.04+R()*.3))}}
- else if(id==='fire'){for(let i=0;i<n;i++){l=(l+.03*(R()*2-1))/1.03;d[i]=l*2.2}for(let k=0;k<90;k++){const p=Math.floor(R()*(n-2000)),a=.2+R()*.8,len=Math.floor(sr*(.004+R()*.02));for(let j=0;j<len;j++)d[p+j]+=(R()*2-1)*a*Math.exp(-j/(len/3))}}
+ if(id==='rain'){for(let i=0;i<n;i++)d[i]=(R()*2-1)*.3;for(let k=0;k<500;k++){const p=Math.floor(R()*(n-900)),a=.25+R()*.5,len=Math.floor(sr*.014);for(let j=0;j<len;j++)d[p+j]+=(R()*2-1)*a*Math.exp(-j/(sr*.003))}}
+ else if(id==='cabin'){let w=0;for(let i=0;i<n;i++){l=(l+.02*(R()*2-1))/1.02;w=(w+.05*(R()*2-1))/1.05;const t=i/sr;d[i]=l*2.4+w*.8*(.55+.27*Math.sin(6.2832*.1*t)+.18*Math.sin(6.2832*.3*t+1))}for(let k=0;k<70;k++){const p=Math.floor(R()*(n-2000)),a=.15+R()*.6,len=Math.floor(sr*(.004+R()*.02));for(let j=0;j<len;j++)d[p+j]+=(R()*2-1)*a*Math.exp(-j/(len/3))}}
  return bufs[id]=b}
 function sndStart(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();ac.resume();const id=D.snd.id,src=ac.createBufferSource(),g=ac.createGain();src.buffer=mkBuf(id);src.loop=true;let nd=src;(FL[id]||[]).forEach(f=>{const b=ac.createBiquadFilter();b.type=f[0];b.frequency.value=f[1];if(f[2])b.Q.value=f[2];nd.connect(b);nd=b});nd.connect(g);g.connect(ac.destination);g.gain.value=0;src.start();g.gain.setTargetAtTime(vg(),ac.currentTime,.4);sn={src,g,id}}catch(e){}}
 function sndStop(){if(!sn)return;const o=sn;sn=null;try{o.g.gain.setTargetAtTime(0,ac.currentTime,.15);setTimeout(()=>{try{o.src.stop()}catch(e){}},700)}catch(e){}}
@@ -421,6 +418,7 @@ $('sch').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;D.snd.id=b.d
 $('svol').value=D.snd.vol;
 $('svol').oninput=e=>{D.snd.vol=+e.target.value;if(sn)sn.g.gain.setTargetAtTime(vg(),ac.currentTime,.05)};
 $('svol').onchange=save;
+if(!SN.some(x=>x[0]===D.snd.id))D.snd.id='none';
 paintSnd();
 function monthly(){const p=cy+'-'+String(cmo+1).padStart(2,'0'),ms=D.sessions.filter(x=>x.d.startsWith(p)),tot=ms.reduce((a,x)=>a+x.sec,0),days=new Set(ms.map(x=>x.d)).size,tk=D.tasks.filter(t=>(t.doneOn||'').startsWith(p)).length;
  $('ml').textContent=$('cm').textContent+' summary';
