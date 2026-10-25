@@ -9,6 +9,8 @@
 <meta name="theme-color" content="#f3ebdd" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1e1510" media="(prefers-color-scheme: dark)">
 <meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
 <meta name="apple-mobile-web-app-title" content="Revision">
 <title>Revision Timer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -455,8 +457,6 @@ document.addEventListener("gesturestart",e=>e.preventDefault());
  bub.addEventListener("pointermove",e=>{if(!on)return;const max=pager.scrollWidth-pager.clientWidth;pager.scrollLeft=Math.min(max,Math.max(0,s0+(e.clientX-sx)*4/nav.clientWidth*pager.clientWidth))});
  const end=()=>{if(!on)return;on=false;bub.classList.remove("drag");const i=Math.max(0,Math.min(3,Math.round(pager.scrollLeft/pager.clientWidth)));pager.style.scrollSnapType="";pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"})};
  bub.addEventListener("pointerup",end);bub.addEventListener("pointercancel",end)})();
-// home screen icon
-try{const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");const g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,"#d89b35");g.addColorStop(1,"#6b3f1d");x.fillStyle=g;x.fillRect(0,0,180,180);x.font="100px serif";x.textAlign="center";x.textBaseline="middle";x.fillText("📚",90,98);const u=c.toDataURL("image/png");["apple-touch-icon","icon"].forEach(r=>{const l=document.createElement("link");l.rel=r;l.href=u;document.head.appendChild(l)})}catch(e){}
 
 // resume if app was closed mid-timer
 if(T.running){T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0){T.left=0;done()}else lock()}
