@@ -9,10 +9,9 @@
 <meta name="theme-color" content="#f3ebdd" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1e1510" media="(prefers-color-scheme: dark)">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="icon" href="icon.png">
 <meta name="apple-mobile-web-app-title" content="Revision">
 <title>Revision Timer</title>
+<link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
@@ -144,10 +143,57 @@ body.fxo #pager,body.fxo nav,body.fxo #top{visibility:hidden}
  .ring{width:170px;height:170px;margin:0 auto 8px}
  .time b{font-size:40px}
 }
+.ic{display:none;width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sw{width:52px;height:30px;border-radius:16px;border:0;background:var(--line);position:relative;padding:0;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw[aria-pressed=true]{background:var(--acc)}.sw[aria-pressed=true]::after{transform:translateX(22px)}
+#lab,#rs2{display:none}
+/* clean mode */
+body.cl{--bg:#000;--card:#0f0f0f;--ink:#f2f2f2;--mute:#8d8d8d;--line:#222;--acc:#2f9d7a;--wine:#2f9d7a;--ok:#2f9d7a;--accfg:#04140e;--c0:#4fc3a1;--c1:#6ea8e6;--c2:#d6b45a;--c3:#d98c8c;color-scheme:dark;font-family:-apple-system,"SF Pro Text",Helvetica,Arial,sans-serif}
+body.cl h1,body.cl .chip,body.cl .btn,body.cl nav button,body.cl .lbl,body.cl .time b,body.cl .big,body.cl .mc h2{font-family:inherit}
+body.cl .ic{display:block}
+body.cl #top{height:56px;justify-content:space-between;padding:0 16px}
+body.cl #streak,body.cl #rs2{color:#eee;border:1px solid rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.04));box-shadow:inset 0 1px 1px rgba(255,255,255,.35),inset 0 -2px 4px rgba(0,0,0,.4),0 4px 10px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+body.cl #streak{border-radius:999px;padding:8px 14px}
+body.cl #rs2{display:flex;width:42px;height:42px;border-radius:50%;padding:0;align-items:center;justify-content:center}
+body.cl #rs2 svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body.cl:not([data-p="0"]) #rs2{visibility:hidden}
+body.cl #pager{top:calc(env(safe-area-inset-top,0px) + 56px);bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+body.cl nav{bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(88%,340px);margin:0 auto;border:1px solid #262626;border-radius:34px;background:#161616;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.6)}
+body.cl nav button{font-size:0;gap:0}
+body.cl .bubble{padding:6px 7px}
+body.cl .bubble::before{border-radius:28px}
+body.cl #v-timer{display:flex;flex-direction:column;align-items:center;justify-content:center}
+body.cl.po #v-timer{justify-content:flex-start}
+body.cl #v-timer>h1,body.cl #v-timer>div.card:nth-of-type(3){display:none}
+body.cl:not(.po) #v-timer>div.card:nth-of-type(1){display:none}
+body.cl #v-timer>div.card:nth-of-type(1){width:100%}
+body.cl #v-timer>div.card:nth-of-type(2){background:none;border:0;padding:0;margin:0;width:100%;text-align:center}
+body.cl #lab{display:inline-block;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:none;color:#d0d0d0;border:1px solid #262626;border-radius:999px;padding:6px 14px;font:inherit;font-size:16px;margin-bottom:8px}
+body.cl #lab::after{content:"";display:inline-block;margin-left:8px;border:4px solid transparent;border-top-color:currentColor;transform:translateY(3px)}
+body.cl.po #lab::after{transform:translateY(-3px) rotate(180deg)}
+body.cl .ring{width:auto;height:auto;margin:0 0 6px}
+body.cl .ring svg,body.cl .time span{display:none}
+body.cl .time{position:static}
+body.cl .time b{font-size:min(27vw,112px);font-weight:300;letter-spacing:-2px}
+body.cl .dots i{background:#0d1f18}body.cl .dots i.d{background:var(--acc)}
+body.cl .dots i.c{width:36px;border-radius:6px;background:color-mix(in srgb,var(--acc) 45%,#0d1f18)}
+body.cl #v-timer>div.card:nth-of-type(2) .row{flex-direction:column;align-items:center;gap:10px}
+body.cl #reset{display:none}
+body.cl #go{flex:none;width:84px;height:84px;border-radius:50%;padding:0;font-size:0;background:color-mix(in srgb,var(--acc) 16%,#000);display:flex;align-items:center;justify-content:center}
+body.cl #go::before{content:"";border:13px solid transparent;border-left:22px solid var(--acc);border-right:0;margin-left:5px}
+body.cl #go.run::before{box-sizing:content-box;width:6px;height:26px;border:0;border-left:7px solid var(--acc);border-right:7px solid var(--acc);margin:0}
+body.cl #skip{flex:none;background:none;color:var(--mute);font-size:15px;padding:6px 14px}
+body.cl #snd{background:none;border:0;padding:0;margin:26px 0 0;width:100%;max-width:340px}
+body.cl #snd summary,body.cl #snd .recent{display:none}
+body.cl #snd .chips{grid-template-columns:repeat(3,1fr);margin-top:0!important}
+body.cl #snd .chip{font-size:13px;padding:9px 4px;border-radius:20px}
+body.cl #fx{--fxbg:#000;--fxl:#1a1a1a;--fxa:#2f9d7a;--fxt:#e8e8e8;--fxm:#8d8d8d}
+body.cl #fxarc{stroke:#2f9d7a}body.cl .fx-ring circle:first-child{stroke:#1a1a1a}body.cl .fx-t b{color:#fff}
 </style>
 </head>
-<body>
-<div id="top"><button id="streak"></button></div>
+<body data-p="0">
+<div id="top"><button id="streak"></button><button id="rs2" aria-label="Reset"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v4h4"/></svg></button></div>
 <main id="pager">
 <section class="pg" id="v-timer">
 <h1>📚 Revision Timer</h1>
@@ -158,6 +204,7 @@ body.fxo #pager,body.fxo nav,body.fxo #top{visibility:hidden}
   <p class="lbl" style="margin:14px 0 6px">Tasks I’m working on</p><div id="pick"></div>
  </div>
  <div class="card">
+  <button id="lab"></button>
   <div class="ring">
    <svg width="264" height="264" viewBox="0 0 240 240"><circle cx="120" cy="120" r="106" fill="none" stroke="var(--line)" stroke-width="16"/><circle id="arc" cx="120" cy="120" r="106" fill="none" stroke="var(--wine)" stroke-width="16" stroke-linecap="round" stroke-dasharray="666" stroke-dashoffset="0"/></svg>
    <div class="time"><b id="clock">25:00</b><span id="mode">Focus</span></div>
@@ -199,6 +246,7 @@ body.fxo #pager,body.fxo nav,body.fxo #top{visibility:hidden}
 </section>
 
 <section class="pg" id="v-set"><h1>Settings</h1>
+ <div class="card"><div class="set" style="margin:0"><span>Clean mode</span><button class="sw" id="cl-tg" aria-pressed="false" aria-label="Clean mode"></button></div></div>
  <div class="card">
   <p class="lbl">Timer (minutes)</p>
   <div class="set"><span>Focus</span><input type="number" inputmode="numeric" id="s-focus" min="1" max="180"></div>
@@ -226,10 +274,10 @@ body.fxo #pager,body.fxo nav,body.fxo #top{visibility:hidden}
 
 <nav>
  <i class="bubble" id="bubble"></i>
- <button data-v="timer" class="on">Timer</button>
- <button data-v="stats">Stats</button>
- <button data-v="todo">To-do</button>
- <button data-v="set">Settings</button>
+ <button data-v="timer" class="on" aria-label="Timer">Timer<svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 3h5"/></svg></button>
+ <button data-v="stats" aria-label="Stats">Stats<svg class="ic" viewBox="0 0 24 24"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg></button>
+ <button data-v="todo" aria-label="To-do">To-do<svg class="ic" viewBox="0 0 24 24"><path d="M4 7l1.5 1.5L8 6M4 15l1.5 1.5L8 14M11 7.5h9M11 15.5h9"/></svg></button>
+ <button data-v="set" aria-label="Settings">Settings<svg class="ic" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></button>
 </nav>
 <div id="mk" class="hide"></div>
 <div id="fx" class="hide">
@@ -244,7 +292,7 @@ const $=id=>document.getElementById(id);
 const KEY="revtimer.v1";
 const def={settings:{focus:25,short:5,long:15,rounds:4,goal:120},sessions:[],timer:{mode:"focus",running:false,endAt:0,left:1500,total:1500,round:1,subject:0,topic:""}};
 let D=JSON.parse(JSON.stringify(def));
-try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);D.settings=Object.assign(D.settings,p.settings||{});D.sessions=p.sessions||[];D.tasks=p.tasks||[];D.snd=p.snd;D.timer=Object.assign(D.timer,p.timer||{})}}catch(e){}
+try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);D.settings=Object.assign(D.settings,p.settings||{});D.sessions=p.sessions||[];D.tasks=p.tasks||[];D.snd=p.snd;D.clean=!!p.clean;D.timer=Object.assign(D.timer,p.timer||{})}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
 const T=D.timer,S=D.settings;
 const dkey=(d=new Date())=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
@@ -256,7 +304,7 @@ const len=m=>S[m]*60;
 const chips=$("chips");
 SUBJ.forEach((n,i)=>{const b=document.createElement("button");b.className="chip";b.style.setProperty("--sc","var(--c"+i+")");b.textContent=n;b.onclick=()=>{T.subject=i;save();paint()};chips.appendChild(b)});
 $("topic").value=T.topic||"";
-$("topic").oninput=e=>{T.topic=e.target.value;save()};
+$("topic").oninput=e=>{T.topic=e.target.value;save();paintLab()};
 
 // audio + wake lock
 let ac,wl;
@@ -292,14 +340,14 @@ function today(){const k=dkey();return D.sessions.filter(x=>x.d===k)}
 function paint(){
  [...chips.children].forEach((c,i)=>c.classList.toggle("on",i===T.subject));
  $("mode").textContent=modeName[T.mode]+(T.mode==="focus"?" · "+SUBJ[T.subject]:"");
- $("go").textContent=T.running?"Pause":(T.left<T.total?"Resume":"Start");$("skip").textContent=T.mode==="focus"?"End":"Skip";
+ $("go").textContent=T.running?"Pause":(T.left<T.total?"Resume":"Start");$("skip").textContent=T.mode==="focus"?"End":"Skip";$("go").classList.toggle("run",T.running);
  $("arc").style.stroke=T.mode==="focus"?"var(--wine)":"var(--ok)";
- $("dots").innerHTML=Array.from({length:S.rounds},(_,i)=>'<i class="'+(i<T.round-1||(i===T.round-1&&T.mode!=="focus")?"d":"")+'"></i>').join("");
+ $("dots").innerHTML=Array.from({length:S.rounds},(_,i)=>'<i class="'+(i<T.round-1||(i===T.round-1&&T.mode!=="focus")?"d":(i===T.round-1?"c":""))+'"></i>').join("");
  paintTime();
  const tot=today().reduce((a,x)=>a+x.sec,0),goal=S.goal*60;
  $("todayBig").textContent=tot?fmt(tot):"0m";
  $("goalBar").style.width=Math.min(100,tot/goal*100)+"%";
- $("goalTxt").textContent="Goal: "+fmt(goal);$("goalPct").textContent=Math.round(tot/goal*100)+"%";paintStreak();paintPick();paintFx();paintRem();syncSound()}
+ $("goalTxt").textContent="Goal: "+fmt(goal);$("goalPct").textContent=Math.round(tot/goal*100)+"%";paintStreak();paintLab();paintPick();paintFx();paintRem();syncSound()}
 
 function renderStats(){
  const td=today(),tot=td.reduce((a,x)=>a+x.sec,0);
@@ -339,7 +387,7 @@ function streak(){
   else if(k<td){const w=mon(k);if(s>0&&(u[w]||0)<2)u[w]=(u[w]||0)+1;else s=0}
   d.setDate(d.getDate()+1)}
  return{cur:s,best:b,left:2-(u[mon(td)]||0)}}
-function paintStreak(){const r=streak();$('streak').innerHTML=`🔥 <b>${r.cur}</b> · Best <b>${r.best}</b> · ❄ ${r.left}`}
+function paintStreak(){const r=streak();$('streak').innerHTML=D.clean?`Streak <b>${r.cur}</b> · Best <b>${r.best}</b> · Freezes ${r.left}`:`🔥 <b>${r.cur}</b> · Best <b>${r.best}</b> · ❄ ${r.left}`}
 $('streak').onclick=()=>{const r=streak();alert(`Current streak: ${r.cur} day(s)
 Longest streak: ${r.best} day(s)
 Freezes left this week: ${r.left} of 2
@@ -444,7 +492,7 @@ mq.addEventListener('change',e=>e.matches?openFx():closeFx());
 if(mq.matches)openFx();
 // swipe pages + tabs
 const pager=$("pager"),tabs=[...document.querySelectorAll("nav button")],bub=$("bubble");let cur=0;
-function sync(){const w=pager.clientWidth||1,p=pager.scrollLeft/w;bub.style.transform="translateX("+p*100+"%)";const i=Math.round(p);if(i!==cur){cur=i;tabs.forEach((x,j)=>x.classList.toggle("on",j===i));if(i===1)renderStats()}}
+function sync(){const w=pager.clientWidth||1,p=pager.scrollLeft/w;bub.style.transform="translateX("+p*100+"%)";const i=Math.round(p);if(i!==cur){cur=i;document.body.dataset.p=i;tabs.forEach((x,j)=>x.classList.toggle("on",j===i));if(i===1)renderStats()}}
 pager.addEventListener("scroll",sync,{passive:true});
 tabs.forEach((b,i)=>b.onclick=()=>pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"}));
 window.addEventListener("resize",()=>{pager.scrollTo({left:cur*pager.clientWidth});sync()});
@@ -456,6 +504,14 @@ document.addEventListener("gesturestart",e=>e.preventDefault());
  const end=()=>{if(!on)return;on=false;bub.classList.remove("drag");const i=Math.max(0,Math.min(3,Math.round(pager.scrollLeft/pager.clientWidth)));pager.style.scrollSnapType="";pager.scrollTo({left:i*pager.clientWidth,behavior:"smooth"})};
  bub.addEventListener("pointerup",end);bub.addEventListener("pointercancel",end)})();
 
+// clean mode
+function paintLab(){$('lab').textContent=T.mode==='focus'?SUBJ[T.subject]+(T.topic.trim()?' · '+T.topic.trim():''):modeName[T.mode]}
+function applyClean(){const c=!!D.clean,b=document.body;b.classList.toggle('cl',c);$('cl-tg').setAttribute('aria-pressed',c);$('snd').open=c;if(!c)b.classList.remove('po')}
+$('cl-tg').onclick=()=>{D.clean=!D.clean;save();applyClean();paint()};
+$('lab').onclick=()=>document.body.classList.toggle('po');
+$('rs2').onclick=()=>$('reset').click();
+const remind0=remind;remind=(m,l)=>{const r=remind0(m,l);return D.clean?r.replace(/[\u{1F300}-\u{1FAFF}]\s?/gu,''):r};
+applyClean();
 // resume if app was closed mid-timer
 if(T.running){T.left=Math.max(0,Math.ceil((T.endAt-Date.now())/1000));if(T.left<=0){T.left=0;done()}else lock()}
 loadSet();renderTodo();paint();renderStats();
